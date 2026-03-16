@@ -130,11 +130,22 @@ export function ProjectCollection({ ProjectData, SectionNum }) {
           <div className={styles.PictureGallery}>
             {projectData.pics.map((picUrl, index) => (
               <img 
+                id={`${projectName}_${index + 1}`}
                 key={index}
                 src={picUrl}
                 alt={`${projectName} screenshot ${index + 1}`}
                 className={styles.projectImage}
               />
+            ))}
+          </div>
+          {/* Picture Gallery Nav */}
+          <div className={styles.GallerySliderNav}>
+            {projectData.pics.map((picUrl, index) => (
+              <a 
+                key={index}
+                href={`#${projectName}_${index + 1}`}
+                className={styles.navDot}
+              ></a>
             ))}
           </div>
         </div>
