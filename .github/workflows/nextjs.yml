@@ -1,0 +1,54 @@
+name: Deploy Next.js site to Pages
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./project_portfolio  # ADD THIS - sets working dir for all run commands
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: ./project_portfolio/package-lock.json  # Point to correct lock file
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          static_site_generator: next
+      
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./project_portfolio  # Explicit working dir
+      
+      - name: Build with Next.js
+        run: npm run build
+        working-directory: ./project_portfolio  # Explicit working dir
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./project_portfolio/out  # Updated path
