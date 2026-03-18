@@ -1,28 +1,25 @@
-import Link from 'next/link';
 import styles from "../app/style.module.css"
 
-// Present in every page
 export default function Header()
 {
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <header>
       <nav className={styles.nav}>
         <div>
-          <Link href='/'>Home</Link>
+          <a className={styles.navText} onClick={() => scrollToSection('hero')}>Home</a>
         </div>
-        
+
         <div>
-          <Link href='/'>About Me</Link>
-        </div>
-        
-        <div>
-          <Link href='/'>Projects</Link>
-        </div>
-        
-        <div>
-          <Link href='/test'>TEST</Link>
+          <a className={styles.navText} onClick={() => scrollToSection('projects')}>Projects</a>
         </div>
       </nav>
     </header>
-  )
+  );
 }
